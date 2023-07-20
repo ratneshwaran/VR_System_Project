@@ -1,0 +1,28 @@
+# doxygen-deploy.yml
+
+name: doxygen-deploy
+
+on:
+  push:
+    branches: [ master ] #this is my default branch
+
+jobs:
+  # The job that will build the Group Project (documentation)
+  deploy-QtProject1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install doxygen
+        run: sudo apt-get install -y doxygen
+      # Run doxygen on Worksheet7 folder
+      - name: Run Doxygen
+        working-directory: ${{github.workspace}}/Worksheet6/Exercise3/Worksheet5/QtProject1/
+        run: doxygen
+      # Deploy html output from Doxygen to ghpages branches
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4.2.5
+        with:
+          # The branch the action should deploy to
+          branch: gh-pages
+          folder: ${{github.workspace}}/Worksheet6/Exercise3/Worksheet5/QtProject1/html
